@@ -18,6 +18,9 @@ main()
 
   drawString5x7(20,20, "hello", COLOR_GREEN, COLOR_RED);
 
-  fillRectangle(30,30, 60, 60, COLOR_ORANGE);
+  drawString8x12(60, 60, "hello", COLOR_PINK, COLOR_BLACK);
+
+  drawRhombus(30, 30, 60, 66, COLOR_PINK);
+  //fillRectangle(30,30, 60, 60, COLOR_ORANGE);
   
 }
