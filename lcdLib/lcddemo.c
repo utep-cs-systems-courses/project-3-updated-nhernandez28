@@ -16,11 +16,11 @@ main()
 
   clearScreen(COLOR_BLUE);
 
-  drawString5x7(20,20, "hello", COLOR_GREEN, COLOR_RED);
+  drawString5x7(10, 10, "Font 5x7", COLOR_PINK, COLOR_BLUE);
 
-  drawString8x12(60, 60, "hello", COLOR_PINK, COLOR_BLACK);
+  drawString11x16(30, 20, "Font 11x16", COLOR_PINK, COLOR_BLUE);
 
-  drawRhombus(30, 30, 60, 66, COLOR_PINK);
+  drawDiamond(50, 40, 30, COLOR_PINK);
   //fillRectangle(30,30, 60, 60, COLOR_ORANGE);
   
 }
