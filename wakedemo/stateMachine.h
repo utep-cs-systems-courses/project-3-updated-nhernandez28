@@ -8,7 +8,9 @@ void state_advance();
 void buzzer_advance();
 void tune();
 void b_s_a(int a); 
-
+void changeColors();
+void diamondShape();
+void tune();
 //void rLedOff();
 //void rLedOn();
 //void gLedOn();

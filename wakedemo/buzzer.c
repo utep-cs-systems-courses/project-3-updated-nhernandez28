@@ -3,14 +3,13 @@
 #include "buzzer.h"
 
 //notes
-/*#define A3 2273
+#define A3 2273
 #define B3 2025
 #define C3 3846
 #define D4 1703
 #define E3 3033
 #define F4 1432
 #define G4 1276
-*/
 
 void buzzer_init()
 {
@@ -28,6 +27,30 @@ void buzzer_set_period(short cycles)
   CCR1 = cycles >> 1; // one half cycle
 }
 
+/*
+void tune()
+{
+  static char note = 0;
+  switch(note){
+  case 1:
+    buzzer_set_period(A3);
+    note++;
+    break;
+  case 2:
+    buzzer_set_period(B3);
+    note++;
+    break;
+  case 3:
+    buzzer_set_period(C3);
+    note++;
+    break;
+  default:
+    note++;
+    break;
+  }
+}
+
+*/
 /*void tune1()
 {
 

@@ -3,36 +3,103 @@
 #include "led.h"
 #include "buzzer.h"
 #include "switches.h"
+//#include "lcddraw.h"
+#include "lcdutils.h"
+//#include "drawShapes.h"
+static int state = 0;
+//static char tune = 0;
 
-static int state = 1;
-static char tune = 0;
+#define A3 2273
+#define B3 2025
+#define C3 3846
+#define D4 1703
+#define E3 3033
+#define F4 1432
+#define G4 1276
 
 void diamondShape()
 {
-  drawDiamond(COLOR_WHITE);
-  drawString11x16(40, 60, "Wlcome!", COLOR_WHITE, COLOR_BLUE);
-  switch(tune){
+  //drawDiamond(COLOR_WHITE);
+  //drawString11x16(40, 60, "Wlcome!", COLOR_WHITE, COLOR_BLUE);
+  switch(state){
   case 0:
-    buzzer_set_period(3136);
-    tune++;
+    clearScreen(COLOR_BLACK);
+    drawDiamond(40, 100, 10, COLOR_PINK);
+    state = 1;
     break;
   case 1:
-    buzzer_set_period(2093);
-    tune++;
+    clearScreen(COLOR_BLACK);
+    drawDiamond(50, 100, 10, COLOR_PINK);
+    state = 2;
     break;
   case 2:
-    buzzer_set_period(2093);
-    tune++;
+    clearScreen(COLOR_BLACK);
+    drawDiamond(60, 100, 10, COLOR_PINK);
+    state = 3;
     break;
   case 3:
-    buzzer_set_period(2334);
-    note = 0;
+    clearScreen(COLOR_BLACK);
+    drawDiamond(70, 100, 10, COLOR_PINK);
+    state = 4;
+    break;
+  case 4:
+    clearScreen(COLOR_BLACK);
+    drawDiamond(80, 100, 10, COLOR_PINK);
+    state = 1;
+    break;
+  }
+}
+
+void changeColors()
+{
+  switch(state){
+  case 1:
+    clearScreen(COLOR_BLACK);
+    drawDiamond(55, 80, 10, COLOR_GREEN);
+    state = 2;
+    break;
+  case 2:
+    clearScreen(COLOR_BLACK);
+    drawDiamond(55, 80, 10, COLOR_PINK);
+    state = 3;
+    break;
+  case 3:
+    clearScreen(COLOR_BLACK);
+    drawDiamond(55, 80, 10, COLOR_GREEN);
+    state = 4;
+    break;
+  case 4:
+    clearScreen(COLOR_BLACK);
+    drawDiamond(55, 80, 10, COLOR_PINK);
+    state = 1;
+    break;
+  }
+}
+
+void tune()
+{
+  static char note = 0;
+  switch(note){
+  case 1:
+    buzzer_set_period(A3);
+    note++;
+    break;
+  case 2:
+    buzzer_set_period(B3);
+    note++;
+    break;
+  case 3:
+    buzzer_set_period(C3);
+    note++;
+    break;
+  default:
+    note++;
     break;
   }
 }
 
 // 1/4
-void dimAt25()
+/*void dimAt25()
 {
   switch(state){
   case 0:
@@ -110,7 +177,7 @@ char toggle_green()
   }
   
   return changed;
-}
+  }*/
 
 /*
 void tunes()
@@ -168,7 +235,7 @@ void buzzer_advance()
     tune++;
   }
 }
-
+/*
 void state_advance()
 {
   char changed = 0;
@@ -188,7 +255,7 @@ void state_advance()
 
   changed_led = changed;
   led_update();
-}
+}/*
 /*static char state_dim = 0;
 static char select_dim = 0;
 static char tune = 0;
