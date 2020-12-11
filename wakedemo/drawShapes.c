@@ -27,6 +27,7 @@ void drawDiamond(u_char col, u_char row, u_int center, u_int colorBGR)
       drawPixel(center + col - c, row + r, colorBGR);
     }
   }
+}
 
   /*void dOtherShape(u_char col, u_char row, u_int center, u_int colorBGR)
  {
@@ -90,4 +91,3 @@ void drawDiamond(u_char col, u_char row, u_int center, u_int colorBGR)
     break;
   }
   */
-}
