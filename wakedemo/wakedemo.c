@@ -16,17 +16,17 @@ void wdt_c_handler()
 {
   static int secCount = 0;
 
-  secCount ++;
-  if (secCount == 250) {		/* once/sec */
+  secCount++;
+  if (++secCount == 250) {		/* once/sec */
     secCount = 0;
     color = (color == COLOR_GREEN) ? COLOR_PINK : COLOR_GREEN;
     redrawScreen = 1;
   }
-  if(secCount == 250 && switch_state_down == 0){
+  else if(secCount == 250 && switch_state_down == 0){
     redrawScreen = 1;
-    secCount == 0;
+    secCount = 0;
   }
-  if(secCount == 250 && switch_state_down == 1){
+  else if(secCount == 250 && switch_state_down == 1){
     secCount = 0;
     redrawScreen = 1;
   }
@@ -40,7 +40,6 @@ void wdt_c_handler()
   }
 }
   
-
 void main()
 {
   P1DIR |= LED_GREEN;		/**< Green led on when CPU on */		
@@ -64,7 +63,8 @@ void main()
       switch(switch_state_down){
       case 1:
 	//fillRectangle(30, 30, 60, 60, color);
-	drawDiamond(30, 80, 20, color);
+	drawDiamond(40, 100, 10, color);
+	//redrawScreen = 0;
 	//drawState();
 	//state = 1;
 	break;
@@ -74,18 +74,23 @@ void main()
 	//state = 2;
 	break;
       case 3:
-	drawDiamond(55, 40, 5, COLOR_WHITE);
-	drawDiamond(55, 60, 5, COLOR_WHITE);
-	drawDiamond(55, 80, 5, COLOR_WHITE);
-	drawDiamond(30, 70, 30, COLOR_BLACK);
-	drawDiamond(30, 100, 30, COLOR_YELLOW);
+	//clearScreen(COLOR_BLACK);
+	drawDiamond(55, 40, 10, COLOR_WHITE);
+	drawDiamond(55, 60, 10, COLOR_ORANGE);
+	drawDiamond(55, 80, 10, COLOR_BLUE);
+	drawDiamond(30, 70, 10, COLOR_RED);
+	
 	//drawState();
 	//state = 3;
 	break;
       case 4:
-	drawDiamond(50, 50, 10, color);
+	//drawDiamond(50, 50, 10, color);
 	drawDiamond(75, 70, 10, color);
-	drawDiamond(100, 90, 10, color);
+	fillRectangle(85, 80, 10, 10, color);
+	drawDiamond(100, 90, 10, COLOR_ORANGE);
+	fillRectangle(110, 100, 10, 10, COLOR_ORANGE);
+	drawDiamond(50, 50, 10, COLOR_ORANGE);
+	fillRectangle(60, 60, 10, 10, COLOR_ORANGE);
 	//drawState();
 	//state = 0;
 	break;
@@ -94,6 +99,7 @@ void main()
 	break;*/
       }
       redrawScreen = 0;
+      //clearScreen(COLOR_BLACK);
     }
     P1OUT &= ~LED_GREEN;	/* green off */
     or_sr(0x10);		/**< CPU OFF */
