@@ -9,7 +9,8 @@ static char tune = 0;
 
 void diamondShape()
 {
-  //drawDiamond(COLOR_WHITE);
+  drawDiamond(COLOR_WHITE);
+  drawString11x16(40, 60, "Wlcome!", COLOR_WHITE, COLOR_BLUE);
   switch(tune){
   case 0:
     buzzer_set_period(3136);
@@ -107,9 +108,11 @@ char toggle_green()
     green_on ^= 1;
     changed = 1;
   }
+  
   return changed;
 }
 
+/*
 void tunes()
 {
   switch(state){
@@ -132,7 +135,15 @@ void tunes()
 
   buzzer_set_period(3000000 / tune);
 }
+*/
 
+static int a = 1;
+static int tune1 = 0;
+
+void b_s_p(int n)
+{
+  buzzer_set_period(n);
+}
 void buzzer_advance()
 {
   static char tune = 0;

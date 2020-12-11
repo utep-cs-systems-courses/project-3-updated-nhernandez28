@@ -5,7 +5,10 @@
 #include "buzzer.h"
 #include "libTimer.h"
 
-char switch_state_down, s_1, s_2, s_3, s_4;
+static unsigned char last_switch, current_switch;
+
+char switch_state_down = 0;
+char s_1, s_2, s_3, s_4;
 
 static char switch_update_interrupt_sense()
 {
@@ -27,6 +30,21 @@ void switch_init()
 
   switch_update_interrupt_sense();
   //led_update();
+}
+
+unsigned int switch_read()
+{
+  unsigned int switch_changed = current_switch ^ last_switch;
+  last_switch = current_switch;
+  return current_switch | (switch_changed << 8);
+}
+
+void __interrupt_vec(PORT2_VECTOR) Port_2()
+{
+  if(P2IFG & SWITCHES){
+    P2IFG &= ~SWITCHES;
+    switch_interrupt_handler();
+  }
 }
 
 void switch_interrupt_handler()
