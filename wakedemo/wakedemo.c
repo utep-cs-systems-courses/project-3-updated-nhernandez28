@@ -53,6 +53,7 @@ void main()
   or_sr(0x8);	              /**< GIE (enable interrupts) */
   //static char state = 0;
   clearScreen(COLOR_BLACK);
+  
   while (1) {			/* forever */
     if (redrawScreen) {
       redrawScreen = 0;
@@ -62,43 +63,42 @@ void main()
 
       switch(switch_state_down){
       case 1:
-	//fillRectangle(30, 30, 60, 60, color);
+	//diamondShape();
 	drawDiamond(40, 100, 10, color);
-	//redrawScreen = 0;
-	//drawState();
-	//state = 1;
+	//tune();
 	break;
       case 2:
-	buzzer_set_period(3000);
-	//drawState();
-	//state = 2;
+	//buzzer_set_period(3000);
+	changeColors();
+	//tune();
 	break;
       case 3:
-	//clearScreen(COLOR_BLACK);
-	drawDiamond(55, 40, 10, COLOR_WHITE);
-	drawDiamond(55, 60, 10, COLOR_ORANGE);
-	drawDiamond(55, 80, 10, COLOR_BLUE);
-	drawDiamond(30, 70, 10, COLOR_RED);
-	
-	//drawState();
-	//state = 3;
+	//drawDiamond(55, 40, 10, COLOR_WHITE);
+	//drawDiamond(55, 60, 10, COLOR_ORANGE);
+	//drawDiamond(55, 80, 10, COLOR_BLUE);
+	//drawDiamond(30, 70, 10, COLOR_RED);
+	diamondShape();
+	diamondShape();
+	//tune();
 	break;
       case 4:
-	//drawDiamond(50, 50, 10, color);
+	/*clearScreen(COLOR_BLACK);
 	drawDiamond(75, 70, 10, color);
 	fillRectangle(85, 80, 10, 10, color);
 	drawDiamond(100, 90, 10, COLOR_ORANGE);
 	fillRectangle(110, 100, 10, 10, COLOR_ORANGE);
 	drawDiamond(50, 50, 10, COLOR_ORANGE);
-	fillRectangle(60, 60, 10, 10, COLOR_ORANGE);
-	//drawState();
-	//state = 0;
+	fillRectangle(60, 60, 10, 10, COLOR_ORANGE);*/
+	//changeColors();
+	changeColors();
+	diamondShape();
+	tune();
 	break;
-	/*default:
-	state = 0;
-	break;*/
+      default:
+	redrawScreen = 0;
+	break;
       }
-      redrawScreen = 0;
+      //redrawScreen = 0;
       //clearScreen(COLOR_BLACK);
     }
     P1OUT &= ~LED_GREEN;	/* green off */
