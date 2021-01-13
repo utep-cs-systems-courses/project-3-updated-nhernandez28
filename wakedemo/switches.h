@@ -7,7 +7,7 @@
 #define SW4 BIT3 //switch 4
 #define SWITCHES (SW1 | SW2 | SW3 | SW4) //switches
 
-void switch_red();
+//void switch_red();
 void switch_init();
 void switch_interrupt_handler();
 

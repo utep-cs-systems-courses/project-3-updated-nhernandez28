@@ -2,12 +2,8 @@
 #include "switches.h"
 #include "led.h"
 #include "stateMachine.h"
-#include "buzzer.h"
-#include "libTimer.h"
 
-static unsigned char last_switch, current_switch;
-
-char switch_state_down = 0;
+char switch_state_down;
 char s_1, s_2, s_3, s_4;
 
 static char switch_update_interrupt_sense()
@@ -29,14 +25,7 @@ void switch_init()
   P2DIR &= ~SWITCHES;
 
   switch_update_interrupt_sense();
-  //led_update();
-}
-
-unsigned int switch_read()
-{
-  unsigned int switch_changed = current_switch ^ last_switch;
-  last_switch = current_switch;
-  return current_switch | (switch_changed << 8);
+  led_update();
 }
 
 void __interrupt_vec(PORT2_VECTOR) Port_2()
