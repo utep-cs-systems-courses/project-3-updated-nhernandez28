@@ -1,16 +1,16 @@
-#include <map430.h>
+#include <msp430.h>
 #include "led.h"
 
 unsigned char red_on = 0, green_on = 0;
 unsigned char changed_led = 0;
 
 static char redVal[] = {0, LED_GREEN};
-static char greenVal[] = {0, LED_GREEN);
+static char greenVal[] = {0, LED_GREEN};
 
 void led_init()
 {
   P1DIR |= LEDS;
-  led_changed = 1;
+  changed_led = 1;
   led_update();
 }
 
