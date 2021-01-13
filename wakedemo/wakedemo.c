@@ -22,7 +22,6 @@ void drawDiamond(u_char col, u_char row, u_char center, u_int color)
   u_char r;
   u_char c;
 
-
   for(c = 0; c < center; c++){
     for(r = center; r < center * 2 - c; r++){
       drawPixel(center + col + c, row + r, color);
@@ -47,7 +46,7 @@ void wdt_c_handler()
   if (switch_state_down == 1) {		/* once/sec */
     if(++secCount %5 == 0){
       buzzer_advance();
-       if(secCount == 125){
+       if(secCount == 250){
 	 state_advance();
 	 secCount = 0;
        }
@@ -81,14 +80,14 @@ void main()
   switch_init();
   enableWDTInterrupts();      /**< enable periodic interrupt */
   or_sr(0x8);	              /**< GIE (enable interrupts) */
-  clearScreen(COLOR_BLACK);
+  clearScreen(COLOR_WHITE);
   
   while (1) {			/* forever */
-    if (redrawScreen) {
+    if(redrawScreen){
       switch(switch_state_down){
       case 0:
-	drawString11x16(20, 10, "Welcome!", COLOR_PINK, COLOR_BLACK);
-	drawString5x7(15, 30, "Press any button", COLOR_PINK, COLOR_BLACK);
+	drawString11x16(20, 10, "Welcome!", COLOR_PINK, COLOR_WHITE);
+	drawString5x7(15, 30, "Press any button", COLOR_PINK, COLOR_WHITE);
 	break;
       case 1:
 	if(prev_s == 2){
@@ -96,7 +95,6 @@ void main()
 	}else if(prev_s == 3){
 	  clearShapes(50, 50, 10);
 	}
-	dim_advance();
 
 	drawShapes(COLOR_PINK, 100, 100, 10);
 	prev_s = 1;
