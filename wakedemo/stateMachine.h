@@ -1,19 +1,13 @@
 #ifndef stateMachine_included
 #define stateMachine_included
 
-void dimAt25();
-void toggle_red();
-void dimAt75();
+void dim25();
+char toggle_red();
+char toggle_green();
+void dim50();
+void dim75();
+void drawShapes(int COLOR, int width, int height, int size);
+void clearShapes(int width, int height, int size);
 void state_advance();
-void buzzer_advance();
-void tune();
-void b_s_a(int a); 
-void changeColors();
-void diamondShape();
-void tune();
-//void rLedOff();
-//void rLedOn();
-//void gLedOn();
-//void tune();
 
 #endif
