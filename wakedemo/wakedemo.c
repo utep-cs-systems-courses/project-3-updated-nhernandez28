@@ -7,100 +7,129 @@
 #include "buzzer.h"
 #include "switches.h"
 
-#define LED_GREEN BIT6             // P1.6
+//#define LED_GREEN BIT6             // P1.6
 
 short redrawScreen = 1;
-u_int color = COLOR_GREEN;
+u_int fontFgColor = COLOR_GREEN;
+long color;
+static int prev_s= 0;
+
+u_char c_width = (screenWidth/2) + 1;
+u_char c_height = (screenHeight/2) + 1;
+
+void drawDiamond(u_char col, u_char row, u_char center, u_int color)
+{
+  u_char r;
+  u_char c;
+
+
+  for(c = 0; c < center; c++){
+    for(r = center; r < center * 2 - c; r++){
+      drawPixel(center + col + c, row + r, color);
+      drawPixel(center + col - c, row + r, color);
+    }
+  }
+
+  for(r = 0; r < center; r++){
+    for(c = 0; c < r; c++){
+      drawPixel(center + col + c, row + r, color);
+      drawPixel(center + col - c, row + r, color);
+    }
+  }
+}
 
 void wdt_c_handler()
 {
   static int secCount = 0;
-
-  secCount++;
-  if (++secCount == 250) {		/* once/sec */
-    secCount = 0;
-    color = (color == COLOR_GREEN) ? COLOR_PINK : COLOR_GREEN;
+  static int secCount2 = 0;
+  static int secCount3 = 0;
+  
+  if (switch_state_down == 1) {		/* once/sec */
+    if(++secCount %5 == 0){
+      buzzer_advance();
+       if(secCount == 125){
+	 state_advance();
+	 secCount = 0;
+       }
+    }
+  }
+  if(++secCount2 == 250){
+    state_advance();
+    secCount2 = 0;
+    secCount2++;
     redrawScreen = 1;
   }
-  else if(secCount == 250 && switch_state_down == 0){
-    redrawScreen = 1;
-    secCount = 0;
-  }
-  else if(secCount == 250 && switch_state_down == 1){
-    secCount = 0;
-    redrawScreen = 1;
-  }
-  if(secCount != 250 && switch_state_down == 2){
-    secCount = 0;
-    redrawScreen = 1;
-  }
-  if(secCount != 250 && switch_state_down == 3){
-    secCount = 0;
-    redrawScreen = 1;
+  if(switch_state_down == 4){
+    buzzer_advance();
+    if(++secCount3 == 250){
+      secCount3 == 0;
+      fontFgColor = (fontFgColor == COLOR_GREEN ? COLOR_PINK : COLOR_GREEN);
+      redrawScreen = 1;
+    }
   }
 }
-  
+
 void main()
 {
+  led_init();
   P1DIR |= LED_GREEN;		/**< Green led on when CPU on */		
   P1OUT |= LED_GREEN;
+  
   configureClocks();
   lcd_init();
   buzzer_init();
-  switch_init(15);
-  
+  switch_init();
   enableWDTInterrupts();      /**< enable periodic interrupt */
   or_sr(0x8);	              /**< GIE (enable interrupts) */
-  //static char state = 0;
   clearScreen(COLOR_BLACK);
   
   while (1) {			/* forever */
     if (redrawScreen) {
-      redrawScreen = 0;
-      //drawString5x7(20,20, "hello", fontFgColor, COLOR_BLUE);
-      drawString11x16(20, 10, "Welcome!", color, COLOR_BLACK);
-      drawString5x7(15, 30, "Press any button", color, COLOR_BLACK);
-
       switch(switch_state_down){
+      case 0:
+	drawString11x16(20, 10, "Welcome!", COLOR_PINK, COLOR_BLACK);
+	drawString5x7(15, 30, "Press any button", COLOR_PINK, COLOR_BLACK);
+	break;
       case 1:
-	//diamondShape();
-	drawDiamond(40, 100, 10, color);
-	//tune();
+	if(prev_s == 2){
+	  clearShapes(25, 30, 20);
+	}else if(prev_s == 3){
+	  clearShapes(50, 50, 10);
+	}
+	dim_advance();
+
+	drawShapes(COLOR_PINK, 100, 100, 10);
+	prev_s = 1;
 	break;
       case 2:
-	//buzzer_set_period(3000);
-	changeColors();
-	//tune();
+	if(prev_s == 1){
+	  clearShapes(100, 100, 10);
+	}else if(prev_s == 3){
+	  clearShapes(50, 50, 10);
+	}
+	drawShapes(COLOR_YELLOW, 25, 30, 20);
+	prev_s = 2;
 	break;
       case 3:
-	//drawDiamond(55, 40, 10, COLOR_WHITE);
-	//drawDiamond(55, 60, 10, COLOR_ORANGE);
-	//drawDiamond(55, 80, 10, COLOR_BLUE);
-	//drawDiamond(30, 70, 10, COLOR_RED);
-	diamondShape();
-	diamondShape();
-	//tune();
+	if(prev_s == 1){
+	  clearShapes(100, 100, 10);
+	}else if(prev_s == 2){
+	  clearShapes(25, 30, 20);
+	}
+	drawShapes(COLOR_BLUE, 50, 50, 10);
+	prev_s = 3;
 	break;
       case 4:
-	/*clearScreen(COLOR_BLACK);
-	drawDiamond(75, 70, 10, color);
-	fillRectangle(85, 80, 10, 10, color);
-	drawDiamond(100, 90, 10, COLOR_ORANGE);
-	fillRectangle(110, 100, 10, 10, COLOR_ORANGE);
-	drawDiamond(50, 50, 10, COLOR_ORANGE);
-	fillRectangle(60, 60, 10, 10, COLOR_ORANGE);*/
-	//changeColors();
-	changeColors();
-	diamondShape();
-	tune();
-	break;
-      default:
-	redrawScreen = 0;
-	break;
+	if(prev_s == 1){
+	  clearShapes(100, 100, 10);
+	}else if(prev_s == 2){
+	  clearShapes(25, 30, 20);
+	}else if(prev_s == 3){
+	  clearShapes(50, 50, 10);
+	}
       }
-      //redrawScreen = 0;
-      //clearScreen(COLOR_BLACK);
     }
+    
     P1OUT &= ~LED_GREEN;	/* green off */
     or_sr(0x10);		/**< CPU OFF */
     P1OUT |= LED_GREEN;		/* green on */
