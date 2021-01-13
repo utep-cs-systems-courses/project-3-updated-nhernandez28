@@ -19,7 +19,7 @@ void led_update()
   if(changed_led){
     char ledFlags = redVal[red_on] | greenVal[green_on];
 
-    P1OUT &= (0xff^LEDS) | ledFlags;
+    P1OUT &= (0xff - LEDS) | ledFlags;
     P1OUT |= ledFlags;
     changed_led = 0;
   }
