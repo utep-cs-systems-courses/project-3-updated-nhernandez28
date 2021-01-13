@@ -7,10 +7,9 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 
-char dim_select = 0;
+char buttonState = 0;
 short int state = 0;
-short int dim = 0;
-short freq = 300;
+short freq = 500;
 
 //will draw diamonds
 void drawShapes(int COLOR, int width, int height, int center)
@@ -62,104 +61,68 @@ char toggle_green()
   return changed;
 }
 
-char blink_red()
+char state1()
 {
-  static char state = 0;
-  switch(state){
+  static short curr = 0;
+  switch(curr){
   case 0:
-    green_on = 1;
-    state = 1;
+    red_on = 1;
+    state = 0;
+    curr = 1;
     break;
   case 1:
-    green_on = 1;
+    red_on = 0;
     state = 0;
+    curr = 0;
     break;
   }
 
   return 1;
 }
 
-void dim25()
+char state2()
 {
-  switch(state){
-  case 0: red_on = 1;
-    break;
-  case 1:
-  case 2:
-  case 3:
-    red_on = 0;
-    break;
-  default:
-    state = 0;
-    break;
-  }
-
-  changed_led = 1;
-  led_update();
-}
-
-void dim50()
-{
+  static char state = 0;
   switch(state){
   case 0:
+    green_on = 1;
+    buzzer_set_period(1000);
+    break;
   case 1:
-    red_on = 1;
-    break;
-  case 2:
-  case 3:
-    red_on = 0;
-    break;
-  default:
+    green_on = 0;
     state = 0;
+    buzzer_set_period(0);
     break;
   }
 
-  changed_led = 1;
+  return 1;
+}
+
+char state3()
+{
+  char changed = 0;
+  static enum {R=0, G=1} color = G;
+  switch(color){
+  case R:
+    changed = toggle_red();
+    color = G;
+    buzzer_set_period(2000);
+  case G:
+    changed = toggle_green();
+    color = R;
+    buzzer_set_period(1000);
+  }
+
+  changed_led = changed;
   led_update();
 }
 
-void dim75()
+char state4()
 {
-  switch(state){
-  case 0: red_on = 0;
-    break;
-  case 1:
-  case 2:
-  case 3:
-    red_on = 1;
-    break;
-  default:
-    state = 0;
-    break;
-  }
-
+  red_on = 0;
+  buzzer_set_period(0);
   changed_led = 1;
   led_update();
-}
-
-char dim_lights()
-{
-  switch(dim_select){
-  case 0:
-    red_on = 0;
-    changed_led = 1;
-    led_update();
-    dim_select = 1;
-    break;
-  case 1:
-    dim25();
-    dim_select = 2;
-    break;
-  case 2:
-    dim50();
-    dim_select = 3;
-    break;
-  case 3:
-    dim75();
-    dim_select = 0;
-    break;
-  }
-
   return 1;
 }
 

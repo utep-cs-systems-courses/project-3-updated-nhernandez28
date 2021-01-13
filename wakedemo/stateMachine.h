@@ -8,6 +8,6 @@ void dim50();
 void dim75();
 void drawShapes(int COLOR, int width, int height, int size);
 void clearShapes(int width, int height, int size);
-void state_advance();
+//void state_advance();
 
 #endif
