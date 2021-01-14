@@ -44,13 +44,11 @@ void wdt_c_handler()
   static int secCount3 = 0;
   
   if (switch_state_down == 1) {		/* once/sec */
-    if(++secCount %5 == 0){
+    if(++secCount %5 == 0)
       buzzer_advance();
-       if(secCount == 250){
-	 state_advance();
-	 secCount = 0;
-       }
-    }
+    if(secCount == 250)
+       state_advance();
+       secCount = 0;
   }
   if(++secCount2 == 250){
     state_advance();
