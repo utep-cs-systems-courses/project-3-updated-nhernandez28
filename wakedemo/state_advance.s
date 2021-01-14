@@ -39,7 +39,7 @@ case3:	call #state3
 	
 case4:	call #state4
 	mov.b r12, 0(r1)	;changed = state4()
-	jump exit
+	jmp exit
 	
 exit:	mov.b 0(r1), &changed_led ;changed_led = changed
 	add #2, r1		  ;moves stack pointer
