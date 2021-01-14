@@ -61,6 +61,7 @@ char toggle_green()
   return changed;
 }
 
+//red flashes and plays sound
 char state1()
 {
   static short curr = 0;
@@ -80,6 +81,7 @@ char state1()
   return 1;
 }
 
+//red flashes
 char state2()
 {
   static char state = 0;
@@ -151,28 +153,76 @@ void buzzer_advance()
   }
 }
 
-/*
-void state_advance()
+void dim25()
 {
-  char changed = 0;
-  switch(switch_state_changed){
+  switch(state){
   case 0:
-    changed = toggle_green();
+    red_on = 0;
     break;
   case 1:
-    changed = toggle_red();
+    red_on = 0;
     break;
   case 2:
-    changed = blink_red();
+    red_on = 0;
     break;
   case 3:
-    changed = dim_lights();
+    red_on = 1;
+    break;
+  default: state = 0;
     break;
   }
 
-  changed_led = changed;
+  changed_led = 1;
   led_update();
-}*/
+}
+
+void dim50()
+{
+  switch(state){
+  case 0:
+    red_on = 0;
+    break;
+  case 1:
+    red_on = 1;
+    break;
+  case 2:
+    red_on = 0;
+    break;
+  case 3:
+    red_on = 1;
+    break;
+  default:
+    state = 0;
+    break;
+  }
+
+  changed_led = 1;
+  led_update();
+}
+
+void dim75()
+{
+  switch(state){
+  case 0:
+    red_on = 1;
+    break;
+  case 1:
+    red_on = 1;
+    break;
+  case 2:
+    red_on = 1;
+    break;
+  case 3:
+    red_on = 0;
+    break;
+  default:
+    state = 0;
+    break;
+  }
+
+  changed_led = 1;
+  led_update();
+}
 
 short get_period(short freq)
 {
