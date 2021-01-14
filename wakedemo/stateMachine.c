@@ -11,7 +11,7 @@ char buttonState = 0;
 short int state = 0;
 short freq = 500;
 
-//will draw diamonds
+//will draw diamonds of specific sizes and locations
 void drawShapes(int COLOR, int width, int height, int center)
 {
   u_char c_width = screenWidth/2 + 1;
@@ -88,10 +88,12 @@ char state2()
   switch(state){
   case 0:
     green_on = 1;
+    dim25();
     buzzer_set_period(1000);
     break;
   case 1:
     green_on = 0;
+    dim25();
     state = 0;
     buzzer_set_period(0);
     break;
@@ -100,6 +102,7 @@ char state2()
   return 1;
 }
 
+//red flashes and no sound
 char state3()
 {
   char changed = 0;
@@ -119,6 +122,7 @@ char state3()
   led_update();
 }
 
+//no shapes and makes sound
 char state4()
 {
   red_on = 0;
@@ -128,6 +132,7 @@ char state4()
   return 1;
 }
 
+//frequencies to make the sounds
 void buzzer_advance()
 {
   static char count = 0;
@@ -153,6 +158,7 @@ void buzzer_advance()
   }
 }
 
+//will have the led on 1/4 of the time
 void dim25()
 {
   switch(state){
@@ -176,6 +182,7 @@ void dim25()
   led_update();
 }
 
+//will have the led on 1/2 of the time
 void dim50()
 {
   switch(state){
@@ -200,6 +207,7 @@ void dim50()
   led_update();
 }
 
+//will have the led on 3/4 of the time
 void dim75()
 {
   switch(state){
